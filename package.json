@@ -1,0 +1,26 @@
+{
+  "name": "x-http-lib",
+  "version": "1.0.0",
+  "description": "易于扩展的http网络请求辅助库",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x-shadow-x/x-http-lib.git"
+  },
+  "keywords": [
+    "http网络请求"
+  ],
+  "author": "junyanLiu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/x-shadow-x/x-http-lib/issues"
+  },
+  "homepage": "https://github.com/x-shadow-x/x-http-lib#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}
