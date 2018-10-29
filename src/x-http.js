@@ -16,7 +16,21 @@ for(let key in configureFnList) {
         enumerable: false,
         configurable: false,
         get: function() {
-            return () => {}
+            return () => {
+                Conf[key]();
+                return this;
+            }
+        }
+    });
+
+    Object.defineProperty(XHttp.prototype, key, {
+        enumerable: false,
+        configurable: false,
+        get: function() {
+            return () => {
+                this[_conf][key]();
+                return this;
+            }
         }
     });
 }
@@ -26,13 +40,20 @@ Object.defineProperty(XHttp.prototype, 'addRequests', {
     configurable: false,
     get: function () {
         return (requestList) => {
-            this.requestList = requestList;
+            for(let key in requestList) {
+                Object.defineProperty(this, key, {
+                    enumerable: false,
+                    configurable: false,
+                    get: function() {
+                        return (options) => {
+                            
+                        }
+                    }
+                });
+            }
         }
     }
 });
-
-
-
 
 // const xHttp = new XHttp()
 // .setDomin("https://miniptapi.innourl.com")
