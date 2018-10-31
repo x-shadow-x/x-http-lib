@@ -18,7 +18,21 @@ for(let key in configureFnList) {
         enumerable: false,
         configurable: false,
         get: function() {
-            return () => {}
+            return () => {
+                Conf[key]();
+                return this;
+            }
+        }
+    });
+
+    Object.defineProperty(XHttp.prototype, key, {
+        enumerable: false,
+        configurable: false,
+        get: function() {
+            return () => {
+                this[_conf][key]();
+                return this;
+            }
         }
     });
 }
