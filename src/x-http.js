@@ -1,7 +1,9 @@
 import { configureFnList, Conf, Configure } from './configure.js';
+import Requester from './requester.js';
 
-const [_conf] = [
-    Symbol('Configure')
+const [_conf, _interfaceList] = [
+    Symbol('Configure'),
+    Symbol('InterfaceSet')
 ];
 
 class XHttp {
@@ -26,13 +28,19 @@ Object.defineProperty(XHttp.prototype, 'addRequests', {
     configurable: false,
     get: function () {
         return (requestList) => {
+            this[_interfaceList] = this[_interfaceList] || {};
+            for(let key in requestList) {
+                this[_interfaceList][key] = new Requester(this[_conf], requestList[key]);
+                Object.defineProperty(XHttp.prototype, key, {
+                    get: function() {
+                        return this[_interfaceList][key].handler;
+                    }
+                })
+            }
             this.requestList = requestList;
         }
     }
 });
-
-
-
 
 // const xHttp = new XHttp()
 // .setDomin("https://miniptapi.innourl.com")
