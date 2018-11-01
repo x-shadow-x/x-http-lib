@@ -47,7 +47,7 @@ Object.defineProperty(XHttp.prototype, 'addRequests', {
                 this[_interfaceList][key] = new Requester(this[_conf], requestList[key]);
                 Object.defineProperty(XHttp.prototype, key, {
                     get: function() {
-                        return this[_interfaceList][key].handler;
+                        return this[_interfaceList][key].handler.bind(this[_interfaceList][key]);
                     }
                 })
             }
