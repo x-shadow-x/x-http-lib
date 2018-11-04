@@ -12,6 +12,7 @@ export default class Requester {
     }
 
     handler(options) {
+        this._handleUrl(options);
         const request = {
             url: this._url,
             header: {...this._header},
@@ -20,11 +21,14 @@ export default class Requester {
             body: options && options.body,
             other: options && options.other
         };
+
         const preHandlers = this._conf.preHandlers;
+        const requestFn = this._conf.requestFn;
         for(let i = 0, len = preHandlers.length; i < len; i++) {
             const item = preHandlers[i];
             Object.prototype.toString.call(item) === '[object Function]' && item(request);
         }
+        requestFn(request);
     }
 
     setHeader(header) {

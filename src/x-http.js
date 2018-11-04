@@ -18,8 +18,8 @@ for(let key in configureFnList) {
         enumerable: false,
         configurable: false,
         get: function() {
-            return () => {
-                Conf[key]();
+            return (...args) => {
+                Conf[key](...args);
                 return this;
             }
         }
@@ -29,8 +29,8 @@ for(let key in configureFnList) {
         enumerable: false,
         configurable: false,
         get: function() {
-            return () => {
-                this[_conf][key]();
+            return (...args) => {
+                this[_conf][key](...args);
                 return this;
             }
         }
@@ -51,20 +51,9 @@ Object.defineProperty(XHttp.prototype, 'addRequests', {
                     }
                 })
             }
-            this.requestList = requestList;
+            return this;
         }
     }
 });
 
-// const xHttp = new XHttp()
-// .setDomin("https://miniptapi.innourl.com")
-// .addRequests({
-//     getUserPlayInfo: '/Redpacket/User/GetUserPlayInfo/{userId}&{brandId}'
-// });
-    
-// xHttp.getUserPlayInfo({
-//     params: {
-//         userId: 2,
-//         brandId: 1003
-//     }
-// });
+export default XHttp;
