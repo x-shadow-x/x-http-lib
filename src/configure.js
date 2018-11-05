@@ -10,6 +10,7 @@ const configureFnList = {
     bindPostHandles: 'bindPostHandles',
     setRequest: 'setRequest',
     bindDirective: 'bindDirective',
+    setDirective: 'setDirective',
     use: 'use'
 }
 
@@ -17,16 +18,17 @@ class Configure {
     constructor() {
         this._preHandlers = [];
         this._postHandles = [];
+        this._directive = null;
     }
 
     [configureFnList.setDomin](domain) {
-        this.domain = domain;
+        this._domain = domain;
         return this;
     }
 
     [configureFnList.bindPreHandles](preHandles) {
-        if(Object.prototype.toString.call(preHandles) == '[object Array]') {
-            this._preHandlers = [...this._preHandlers, ...preHandles]
+        if (Object.prototype.toString.call(preHandles) == "[object Array]") {
+            this._preHandlers = [...this._preHandlers, ...preHandles];
         } else {
             this._preHandlers.push(preHandles);
         }
@@ -34,8 +36,8 @@ class Configure {
     }
 
     [configureFnList.bindPostHandles](postHandles) {
-        if(Object.prototype.toString.call(postHandles) == '[object Array]') {
-            this._postHandles = [...this._postHandles, ...postHandles]
+        if (Object.prototype.toString.call(postHandles) == "[object Array]") {
+            this._postHandles = [...this._postHandles, ...postHandles];
         } else {
             this._postHandles.push(postHandles);
         }
@@ -47,8 +49,28 @@ class Configure {
         return this;
     }
 
+    [configureFnList.bindDirective](directiveName, fn) {
+        this._directive = this._directive || { ...Conf._directive } || {};
+        if (fn && Object.prototype.toString.call(fn) === '[object Function]') {
+            this._directive[directiveName] = fn;
+        }
+        return this;
+    }
+
+    [configureFnList.setDirective](directiveName, fn) {
+        this._directive = {};
+        if (fn && Object.prototype.toString.call(fn) === '[object Function]') {
+            this._directive[directiveName] = fn;
+        }
+        return this;
+    }
+
     [configureFnList.use](plugin, options) {
         plugin.install(this, options);
+    }
+
+    get domain() {
+        return this._domain || Conf._domain || '';
     }
 
     get preHandlers() {
@@ -57,6 +79,10 @@ class Configure {
 
     get postHandles() {
         return this._postHandles || Conf._postHandles || [];
+    }
+
+    get directive() {
+        return this._directive || Conf._directive || [];
     }
 
     get requestFn() {
