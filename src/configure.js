@@ -73,6 +73,13 @@ class Configure {
         return this._domain || Conf._domain || '';
     }
 
+    get header() {
+        return this._header || Conf._header || {
+            'Cookie': '123',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }
+
     get preHandlers() {
         return this._preHandlers || Conf._preHandlers || [];
     }
