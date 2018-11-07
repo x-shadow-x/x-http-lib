@@ -4,7 +4,8 @@ const CleanWebpackPligin = require("clean-webpack-plugin");
 const baseConfig = require("./webpack.config.base");
 
 baseConfig.mode = "production";
-baseConfig.entry = "./src/x-http.js";
+// baseConfig.entry = "./src/x-http.js";
+baseConfig.entry = "./src/index.js";
 baseConfig.output = {
     filename: "bundle.js"
 };

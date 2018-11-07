@@ -7,7 +7,9 @@
 const configureFnList = {
     setDomin: 'setDomin',
     bindPreHandles: 'bindPreHandles',
+    setPreHandles: 'setPreHandles',
     bindPostHandles: 'bindPostHandles',
+    setPostHandles: 'setPostHandles',
     setRequest: 'setRequest',
     bindDirective: 'bindDirective',
     setDirective: 'setDirective',
@@ -16,8 +18,8 @@ const configureFnList = {
 
 class Configure {
     constructor() {
-        this._preHandlers = [];
-        this._postHandles = [];
+        this._preHandlers = null;
+        this._postHandles = null;
         this._directive = null;
     }
 
@@ -27,6 +29,17 @@ class Configure {
     }
 
     [configureFnList.bindPreHandles](preHandles) {
+        this._preHandlers = this._preHandlers || (Conf._preHandlers && [...Conf._preHandlers]) || [];
+        if (Object.prototype.toString.call(preHandles) == "[object Array]") {
+            this._preHandlers = [...this._preHandlers, ...preHandles];
+        } else {
+            this._preHandlers.push(preHandles);
+        }
+        return this;
+    }
+
+    [configureFnList.setPreHandles](preHandles) {
+        this._preHandlers = [];
         if (Object.prototype.toString.call(preHandles) == "[object Array]") {
             this._preHandlers = [...this._preHandlers, ...preHandles];
         } else {
@@ -36,6 +49,17 @@ class Configure {
     }
 
     [configureFnList.bindPostHandles](postHandles) {
+        this._postHandles = this._postHandles || (Conf._postHandles && [...Conf._postHandles]) || [];
+        if (Object.prototype.toString.call(postHandles) == "[object Array]") {
+            this._postHandles = [...this._postHandles, ...postHandles];
+        } else {
+            this._postHandles.push(postHandles);
+        }
+        return this;
+    }
+
+    [configureFnList.setPostHandles](postHandles) {
+        this._postHandles = [];
         if (Object.prototype.toString.call(postHandles) == "[object Array]") {
             this._postHandles = [...this._postHandles, ...postHandles];
         } else {
@@ -75,8 +99,7 @@ class Configure {
 
     get header() {
         return this._header || Conf._header || {
-            'Cookie': '123',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
         }
     }
 

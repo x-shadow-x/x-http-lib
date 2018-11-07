@@ -1,7 +1,8 @@
 export default {
-	entry: "./src/index.js",
+	entry: "./src/x-http.js",
 	output: {
 		file: 'bundle.js',
+		name: 'XHttp',
 	  	format: 'iife'
 	}
 };

@@ -1,16 +1,18 @@
 import XHttp from './x-http';
+// const XHttp = require('../dist/bundle');
 import { Base64 } from 'js-base64';
 import axios from 'axios';
-console.log(Base64);
+console.log(XHttp);
 
 const MyPlugin = {
     install(instance, options) {
         instance.setRequest((requestArgs) => {
-			// axios.defaults.withCredentials=true;
-            return axios.get(requestArgs.url, {
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
+			// axios.defaults.crossDomain = true;
+			// axios.defaults.withCredentials  = true;
+            return axios({
+				url: requestArgs.url,
+				method: requestArgs.method,
+				headers: requestArgs.header,
 			});
         })
     }
@@ -18,14 +20,16 @@ const MyPlugin = {
 
 XHttp.use(MyPlugin).bindDirective("b", value => {
 	return Base64.encode(value);
-});;
+}).bindPreHandles(() => {
+	console.log(11111);
+});
 
 const xHttp = new XHttp();
 xHttp.setDomin("http://miniptapi.innourl.com");
 xHttp.addRequests({
 	getUserPlayInfo: "/Redpacket/User/GetUserPlayInfo/{userId:b}&{brandId}"
 }).bindPreHandles((request) => {
-	console.log(request);
+	console.log(666777);
 });
 
 xHttp.getUserPlayInfo({
@@ -36,5 +40,3 @@ xHttp.getUserPlayInfo({
 }).then(res => {
 	console.log(res);
 });
-
-console.log(123123123);

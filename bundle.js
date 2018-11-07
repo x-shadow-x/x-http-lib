@@ -1,7 +1,5 @@
-(function (axios) {
+var XHttp = (function () {
     'use strict';
-
-    axios = axios && axios.hasOwnProperty('default') ? axios['default'] : axios;
 
     /**
      * x-http类公共默认配置以及具体实例的单独配置项功能类
@@ -12,7 +10,9 @@
     const configureFnList = {
         setDomin: 'setDomin',
         bindPreHandles: 'bindPreHandles',
+        setPreHandles: 'setPreHandles',
         bindPostHandles: 'bindPostHandles',
+        setPostHandles: 'setPostHandles',
         setRequest: 'setRequest',
         bindDirective: 'bindDirective',
         setDirective: 'setDirective',
@@ -21,8 +21,8 @@
 
     class Configure {
         constructor() {
-            this._preHandlers = [];
-            this._postHandles = [];
+            this._preHandlers = null;
+            this._postHandles = null;
             this._directive = null;
         }
 
@@ -32,6 +32,17 @@
         }
 
         [configureFnList.bindPreHandles](preHandles) {
+            this._preHandlers = this._preHandlers || (Conf._preHandlers && [...Conf._preHandlers]) || [];
+            if (Object.prototype.toString.call(preHandles) == "[object Array]") {
+                this._preHandlers = [...this._preHandlers, ...preHandles];
+            } else {
+                this._preHandlers.push(preHandles);
+            }
+            return this;
+        }
+
+        [configureFnList.setPreHandles](preHandles) {
+            this._preHandlers = [];
             if (Object.prototype.toString.call(preHandles) == "[object Array]") {
                 this._preHandlers = [...this._preHandlers, ...preHandles];
             } else {
@@ -41,6 +52,17 @@
         }
 
         [configureFnList.bindPostHandles](postHandles) {
+            this._postHandles = this._postHandles || (Conf._postHandles && [...Conf._postHandles]) || [];
+            if (Object.prototype.toString.call(postHandles) == "[object Array]") {
+                this._postHandles = [...this._postHandles, ...postHandles];
+            } else {
+                this._postHandles.push(postHandles);
+            }
+            return this;
+        }
+
+        [configureFnList.setPostHandles](postHandles) {
+            this._postHandles = [];
             if (Object.prototype.toString.call(postHandles) == "[object Array]") {
                 this._postHandles = [...this._postHandles, ...postHandles];
             } else {
@@ -76,6 +98,12 @@
 
         get domain() {
             return this._domain || Conf._domain || '';
+        }
+
+        get header() {
+            return this._header || Conf._header || {
+                'Content-Type': 'application/json'
+            }
         }
 
         get preHandlers() {
@@ -224,33 +252,6 @@
         }
     });
 
-    const MyPlugin = {
-        install(instance, options) {
-            instance.setRequest((requestArgs) => {
-                return axios(requestArgs);
-            });
-        }
-    };
+    return XHttp;
 
-    XHttp.use(MyPlugin);
-
-    const xHttp = new XHttp();
-    xHttp.setDomin("http://miniptapi.innourl.com");
-    xHttp.addRequests({
-    	getUserPlayInfo: "/Redpacket/User/GetUserPlayInfo/{userId}&{brandId}"
-    }).bindPreHandles((request) => {
-    	console.log(request);
-    });
-
-    xHttp.getUserPlayInfo({
-    	query: {
-    		userId: 2,
-    		brandId: "1003"
-    	}
-    }).then(res => {
-    	console.log(res);
-    });
-
-    console.log(123123123);
-
-}(axios));
+}());
