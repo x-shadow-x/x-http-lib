@@ -1,5 +1,7 @@
 {
 	"presets": [
-		"latest"
+		["@babel/preset-env", {
+			"modules": false
+		}]
 	]
 }

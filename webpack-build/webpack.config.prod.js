@@ -25,7 +25,7 @@ baseConfig.plugins.push(
 				}
 			}
 		}),
-		new CleanWebpackPligin(path.resolve(__dirname, "../dist")) // 每次重新打包时清楚原本的内容
+		new CleanWebpackPligin(path.resolve(__dirname, "../dist")) // 每次重新打包时清除原本的内容
 	]
 );
 

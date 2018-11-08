@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const baseConfig = require("./webpack.config.base");
 
 baseConfig.mode = "development"; // 开发模式
-baseConfig.entry = "./src/index.js";
+baseConfig.entry = "./src/test.js";
 baseConfig.output = {
     filename: "bundle.js"
 };
