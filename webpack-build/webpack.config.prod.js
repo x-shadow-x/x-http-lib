@@ -7,7 +7,9 @@ baseConfig.mode = "production";
 // baseConfig.entry = "./src/x-http.js";
 baseConfig.entry = "./src/index.js";
 baseConfig.output = {
-    filename: "bundle.js"
+    filename: "bundle.js",
+    libraryTarget: "umd",
+    library: "XHttp"
 };
 baseConfig.plugins.push(
 	...[
